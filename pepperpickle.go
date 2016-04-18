@@ -1,3 +1,13 @@
+/*
+pepperpickle
+
+version 0.0.1 - initial published version
+
+
+2016 Manuel Iwansky ( w33zl3p00tch [at) gmail d0t com )
+released under a BSD-Style license
+*/
+
 package main
 
 import (
@@ -144,7 +154,7 @@ func main() {
 		binary.Read(buf, binary.BigEndian, &filesize)
 
 		filename := string(plaintext[14 : 14+filenamesize])
-		fmt.Printf("Filname of the encrypted file:\t")
+		fmt.Printf("Filename of the encrypted file:\t")
 		fmt.Println(filename)
 
 		msgCompr := plaintext[14+filenamesize : 14+filenamesize+filesize]
@@ -241,12 +251,12 @@ func decompress(input []byte) []byte {
 	output := buf.Bytes()
 	fmt.Printf("Size of output: ")
 	fmt.Println(len(output))
-	
+
 	return output
 }
 
+// Assemble the message:
 func assemble(msg []byte, msgFilename string) []byte {
-	// Assemble the message:
 	// Format:
 	// [magic, 5b] [filename size, 1b] [message size, 8b] [filename] [message...]
 

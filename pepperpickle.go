@@ -29,9 +29,12 @@ import (
 
 func main() {
 	// flags
-	encryptPtr := flag.String("encrypt", "", "name of the file to encrypt")
-	decryptPtr := flag.String("decrypt", "", "name of the image to decrypt")
-	imagePtr := flag.String("image", "", "name of the source image")
+	encryptPtr := flag.String("encrypt", "",
+		"name of the file to encrypt")
+	decryptPtr := flag.String("decrypt", "",
+		"name of the image to decrypt")
+	imagePtr := flag.String("image", "",
+		"name of the source image")
 	flag.Parse()
 
 	encFile := *encryptPtr
@@ -128,7 +131,6 @@ func main() {
 		passwd := getDecPassword()
 
 		plaintext := decryptFromB(ciphertext, passwd, salt)
-		fmt.Println(plaintext[0:20])
 
 		magic := plaintext[0:5]
 		if !bytes.Equal(magic, []byte{208, 110, 250, 206, 1}) {
@@ -142,6 +144,7 @@ func main() {
 		binary.Read(buf, binary.BigEndian, &filesize)
 
 		filename := string(plaintext[14 : 14+filenamesize])
+		fmt.Printf("Filname of the encrypted file:\t")
 		fmt.Println(filename)
 
 		msgCompr := plaintext[14+filenamesize : 14+filenamesize+filesize]
@@ -228,9 +231,6 @@ func compress(input []byte) []byte {
 
 // decompress the message
 func decompress(input []byte) []byte {
-	fmt.Printf("Size of compressed data: ")
-	fmt.Println(len(input))
-
 	var buf bytes.Buffer
 	w := io.Writer(&buf)
 	b := bytes.NewReader(input)
@@ -241,6 +241,7 @@ func decompress(input []byte) []byte {
 	output := buf.Bytes()
 	fmt.Printf("Size of output: ")
 	fmt.Println(len(output))
+	
 	return output
 }
 
@@ -250,7 +251,9 @@ func assemble(msg []byte, msgFilename string) []byte {
 	// [magic, 5b] [filename size, 1b] [message size, 8b] [filename] [message...]
 
 	// The magic number will indicate that the message is decoded correctly.
-	magic := []byte{0xD0, 0x6E, 0xFA, 0xCE, 0x01} // D0 6E FA CE 01: [208 110 250 206 1]
+	// The last byte is reserved for future additions. 01 inidcates
+	// the first version of the format.
+	magic := []byte{0xD0, 0x6E, 0xFA, 0xCE, 0x01} // D0 6E FA CE 01
 
 	msgFilename_b := []byte(msgFilename)
 
@@ -275,14 +278,8 @@ func assemble(msg []byte, msgFilename string) []byte {
 func encryptToB(plaintext []byte, passwd string, maxMsgSize int) string {
 	var ciphertext []byte
 
-	fmt.Printf("\n\nCalculating the secret key... ")
-
 	salt, err := generateRandomBytes(16)
 	key := getKey(passwd, salt) //get a 32byte key to make use of AES256
-
-	fmt.Println("done.")
-
-	// The key length can be 32, 24, 16  bytes (OR in bits: 128, 192 or 256)
 
 	if ciphertext, err = encrypt(key, plaintext); err != nil {
 		log.Fatal(err)
@@ -300,13 +297,10 @@ func encryptToB(plaintext []byte, passwd string, maxMsgSize int) string {
 	}
 
 	// fill the remaining space with random bytes
-
-	fmt.Printf("Filling the remaining space with random data... ")
 	paddingSize := ((maxMsgSize + (maxMsgSize % 8)) - (len(ciphertext_s) * 8)) / 8
 
 	padding, err := generateRandomBytes(paddingSize)
 	check(err)
-	fmt.Println("done.")
 
 	ciphertextFull := append(ciphertext_s, padding...)
 
@@ -326,7 +320,7 @@ func decryptFromB(ciphertext []byte, passwd string, salt []byte) []byte {
 
 // encrypt AES. The key has to be 32 bytes long for AES256.
 func encrypt(key, text []byte) (ciphertext []byte, err error) {
-	fmt.Printf("Encrypting... ")
+	fmt.Printf("\nEncrypting... ")
 	var block cipher.Block
 
 	if block, err = aes.NewCipher(key); err != nil {

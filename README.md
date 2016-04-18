@@ -4,7 +4,7 @@
 
 PEPPERPICKLE is a small program that can be used to secretly store a file into an image file.
 
-The hidden file is encrypted using AES256 and stored steganographically in the image. A hiddenfile can be any file, provided it is significantly smaller than the cover image (i.e. the image file it is stored in).
+The hidden file is encrypted using AES256 and stored steganographically in the image. A hidden file can be any file, provided it is significantly smaller than the cover image (i.e. the image file it is stored in).
 
 Supported input formats for the cover image are PNG, JPG and GIF. As output, only PNG is supported.
 

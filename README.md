@@ -14,12 +14,28 @@ Currently, the message is stored using the LSB (Least Significant Bit) of the pi
 
 pepperpickle is written in Go 1.6. To successfully compile it, "golang.org/x/crypto/scrypt" and "golang.org/x/crypto/ssh/terminal" are needed.
 
+You can install the additional packages by issuing:
+
+```$ go get golang.org/x/crypto/scrypt```
+```$ go get golang.org/x/crypto/ssh/terminal```
+
+or just clone the repo:
+git clone https://go.googlesource.com/crypto
+
+see https://go.googlesource.com/crypto for further information
+
+
+
 ## Usage
 
 to encrypt a file into an image:
+
 ```pepperpickle -encrypt FILE_TO_HIDE -image IMAGE```
 
+
+
 to decrypt a file:
+
 ```pepperpickle -decrypt IMAGE_out.png```
 
 The user will be asked to provide a password.

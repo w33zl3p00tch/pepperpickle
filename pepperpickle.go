@@ -6,6 +6,19 @@ version 0.0.1 - initial published version
 
 2016 Manuel Iwansky ( w33zl3p00tch [at) gmail d0t com )
 released under a BSD-Style license
+
+
+needs "golang.org/x/crypto/scrypt" and 
+"golang.org/x/crypto/ssh/terminal"
+
+You can install them by issuing:
+$ go get golang.org/x/crypto/scrypt
+$ go get golang.org/x/crypto/ssh/terminal
+
+or just clone the repo:
+git clone https://go.googlesource.com/crypto
+
+see https://go.googlesource.com/crypto for further information
 */
 
 package main
@@ -85,6 +98,7 @@ func main() {
 		w, h := bounds.Max.X, bounds.Max.Y
 		maxMsgSize := w * h * 3
 
+		fmt.Printf("Maximum message size about:\t"); fmt.Println(maxMsgSize/8)
 		fmt.Printf("Size of full message:\t")
 		fmt.Println(len(msgFull) + 16 + 16)
 		if len(msgFull)+32 > maxMsgSize/8 {

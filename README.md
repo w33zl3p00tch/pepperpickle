@@ -17,6 +17,7 @@ pepperpickle is written in Go 1.6. To successfully compile it, "golang.org/x/cry
 You can install the additional packages by issuing:
 
 ```$ go get golang.org/x/crypto/scrypt```
+
 ```$ go get golang.org/x/crypto/ssh/terminal```
 
 or just clone the repo:

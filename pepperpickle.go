@@ -261,7 +261,7 @@ func assemble(msg []byte, msgFilename string) []byte {
 	// [magic, 5b] [filename size, 1b] [message size, 8b] [filename] [message...]
 
 	// The magic number will indicate that the message is decoded correctly.
-	// The last byte is reserved for future additions. 01 inidcates
+	// The last byte is reserved for future additions. 01 indicates
 	// the first version of the format.
 	magic := []byte{0xD0, 0x6E, 0xFA, 0xCE, 0x01} // D0 6E FA CE 01
 
@@ -307,7 +307,7 @@ func encryptToB(plaintext []byte, passwd string, maxMsgSize int) string {
 	}
 
 	// fill the remaining space with random bytes
-	paddingSize := ((maxMsgSize + (maxMsgSize % 8)) - (len(ciphertext_s) * 8)) / 8
+	paddingSize := (((maxMsgSize + (maxMsgSize % 8)) - (len(ciphertext_s) * 8)) / 8) + 1
 
 	padding, err := generateRandomBytes(paddingSize)
 	check(err)

@@ -8,7 +8,7 @@ version 0.0.1 - initial published version
 released under a BSD-Style license
 
 
-needs "golang.org/x/crypto/scrypt" and 
+needs "golang.org/x/crypto/scrypt" and
 "golang.org/x/crypto/ssh/terminal"
 
 You can install them by issuing:
@@ -46,8 +46,8 @@ import (
 	"strconv"
 	"syscall"
 
-	_"image/gif"
-	_"image/jpeg"
+	_ "image/gif"
+	_ "image/jpeg"
 )
 
 func main() {
@@ -98,10 +98,11 @@ func main() {
 		w, h := bounds.Max.X, bounds.Max.Y
 		maxMsgSize := w * h * 3
 
-		fmt.Printf("Maximum message size about:\t"); fmt.Println(maxMsgSize/8)
+		fmt.Printf("Maximum message size about:\t")
+		fmt.Println(maxMsgSize / b_len)
 		fmt.Printf("Size of full message:\t")
 		fmt.Println(len(msgFull) + 16 + 16)
-		if len(msgFull)+32 > maxMsgSize/8 {
+		if len(msgFull)+32 > maxMsgSize/b_len {
 			log.Fatal("Sorry, the compressed message is too large.")
 		}
 
@@ -120,7 +121,6 @@ func main() {
 		fileName := filepath.Base(imgFile)
 		outfileName := fileName[:len(fileName)-len(extName)]
 
-
 		fmt.Printf("Encoding and saving the image... ")
 		outfile, err := os.Create(outfileName + "_out.png")
 		check(err)
@@ -128,7 +128,7 @@ func main() {
 		png.Encode(outfile, dest)
 		fmt.Println("done.\n\n" + outfileName + "_out.png written.")
 
-		} else if decFile != "" { // Decrypt decFile, a png image:
+	} else if decFile != "" { // Decrypt decFile, a png image:
 		// Open the image:
 		infile1, err := os.Open(decFile)
 		check(err)
@@ -194,12 +194,11 @@ func main() {
 	}
 }
 
-
 // Check for errors and quit if an error occured.
 func check(err error) {
-        if err != nil {
-                log.Fatal(err)
-        }
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 // Get the password from the user. Will not echo.
@@ -409,17 +408,20 @@ func generateRandomBytes(n int) ([]byte, error) {
 // will always be set to opaque, making detection of steganography too easy.
 // This is a little bit sad, as using the alpha value would give us one more
 // bit of storage for each pixel. - Thus, it's exactly one little bit sad ;)
+// 	There is one exeption, though:
+// For some reason the pixel information gets garbled up in fully transparent
+// sections. As workaround, the alpha value is set to 1 on pixels with an
+// alpha value of 0. I guess this has to do with PNG's compression.
 func imgEncode(src image.Image, bitstring string) (image.Image, error) {
 	fmt.Printf("Encoding the message... ")
 	bounds := src.Bounds()
 	w, h := bounds.Max.X, bounds.Max.Y
 	dest := image.NewRGBA(image.Rect(0, 0, w, h))
-	bitindex := 0
+	bitindex := 0 // counter to determine where we are parsing the message
 
 	for x := 0; x < w; x++ {
 		for y := 0; y < h; y++ {
 			pixel := src.At(x, y)
-			//bitindex := (x + y) * 3
 
 			// pixel.RGBA returns uint64, so the values are divided
 			// to uint8 (one byte) to make them suitable for
@@ -428,24 +430,40 @@ func imgEncode(src image.Image, bitstring string) (image.Image, error) {
 			tmpr := uint8(srcr / 256)
 			tmpg := uint8(srcg / 256)
 			tmpb := uint8(srcb / 256)
+			tmpa := uint8(alph / 256)
 
-			// 48 is "0", 49 is "1" in ASCII/UTF8
+			// Set the 3 LSBs if they differ from the current 3 bits
+			// of the message.
+			// 48 is "0", 49 is "1" in ASCII/UTF8.
+			// Red:
 			if bitstring[bitindex] == 48 && tmpr%2 == 1 {
 				tmpr--
 			} else if bitstring[bitindex] == 49 && tmpr%2 == 0 {
 				tmpr++
 			}
+			// Green:
 			if bitstring[bitindex+1] == 48 && tmpg%2 == 1 {
 				tmpg--
 			} else if bitstring[bitindex+1] == 49 && tmpg%2 == 0 {
 				tmpg++
 			}
+			// Blue:
 			if bitstring[bitindex+2] == 48 && tmpb%2 == 1 {
 				tmpb--
 			} else if bitstring[bitindex+2] == 49 && tmpb%2 == 0 {
 				tmpb++
 			}
-			dest.Set(x, y, color.RGBA{tmpr, tmpg, tmpb, uint8(alph / 256)})
+
+			// Workaround for images with fully transparent sections:
+			// if alpha is 0, set it to 1, which is an LSB of 1.
+			if tmpa == 0 {
+				tmpa = 1
+			}
+
+			// Set the new pixel values.
+			dest.Set(x, y, color.RGBA{tmpr, tmpg, tmpb, tmpa})
+
+			// Increase the counter.
 			bitindex += 3
 		}
 	}

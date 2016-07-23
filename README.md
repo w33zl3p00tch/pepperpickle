@@ -17,7 +17,7 @@ Please report any bugs you might find. Suggestions and feature requests are welc
 ## Installation
 
 Binaries for Linux-amd64 and Mac OS X are available at:
-[https://github.com/w33zl3p00tch/pepperpickle/releases]
+https://github.com/w33zl3p00tch/pepperpickle/releases
 
 Simply extract the binary to a folder in your PATH, e.g. /usr/local
 

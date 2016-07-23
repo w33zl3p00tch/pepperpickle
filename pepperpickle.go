@@ -1,10 +1,10 @@
 /*
-pepperpickle
+pepperpickle version 0.0.2
 
-version 0.0.1 - initial published version
+homepage: https://github.com/w33zl3p00tch/pepperpickle
 
 
-2016 Manuel Iwansky ( w33zl3p00tch [at) gmail d0t com )
+2016 (c) Manuel Iwansky ( w33zl3p00tch [at) gmail d0t com )
 released under a BSD-Style license
 
 

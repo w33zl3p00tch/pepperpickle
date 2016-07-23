@@ -16,6 +16,12 @@ Please report any bugs you might find. Suggestions and feature requests are welc
 
 ## Installation
 
+Binaries for Linux-amd64 and Mac OS X are available at:
+[https://github.com/w33zl3p00tch/pepperpickle/releases]
+
+Simply extract the binary to a folder in your PATH, e.g. /usr/local
+
+
 pepperpickle is written in Go 1.6. To successfully compile it, "golang.org/x/crypto/scrypt" and "golang.org/x/crypto/ssh/terminal" are needed.
 
 You can install the additional libraries by issuing:
@@ -48,6 +54,7 @@ The user will be asked to provide a password.
 ## Revision history
 
 v0.0.2: added workaround for images with fully transparent sections
+
 v0.0.1: initial commit
 
 

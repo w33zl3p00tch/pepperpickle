@@ -1,5 +1,5 @@
 /*
-pepperpickle version 0.0.2
+pepperpickle version 0.0.3
 
 homepage: https://github.com/w33zl3p00tch/pepperpickle
 
@@ -58,13 +58,28 @@ func main() {
 		"name of the image to decrypt")
 	imagePtr := flag.String("image", "",
 		"name of the source image")
+	versionPtr := flag.Bool("version", false,
+		"prints the version string")
 	flag.Parse()
 
 	encFile := *encryptPtr
 	decFile := *decryptPtr
 	imgFile := *imagePtr
+	version := *versionPtr
+
+	versionString := "\033[1mpepperpickle\033[0m v0.0.3\n\n" +
+		"A steganography tool to hide and extract a file in images\n" +
+		"(c) 2016 Manuel Iwansky\n\n" +
+		"https://github.com/w33zl3p00tch/pepperpickle\n"
 
 	const b_len = 8 // length of on byte in bits
+
+	if version { //print the version string
+		fmt.Println(versionString)
+		if encFile == "" || decFile == "" {
+			return
+		}
+	}
 
 	// Encrypt encFile and store it in imgFile if both flags are set:
 	if encFile != "" && imgFile != "" {

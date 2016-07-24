@@ -14,55 +14,69 @@ Currently, the message is stored using the LSB (Least Significant Bit) of the pi
 Please report any bugs you might find. Suggestions and feature requests are welcome.
 
 
-## Installation
-
-Binaries for Linux-amd64 and Mac OS X are available at:
-https://github.com/w33zl3p00tch/pepperpickle/releases
-
-Simply extract the binary to a folder in your PATH, e.g. /usr/local
-
-
-pepperpickle is written in Go 1.6. To successfully compile it, "golang.org/x/crypto/scrypt" and "golang.org/x/crypto/ssh/terminal" are needed.
-
-You can install the additional libraries by issuing:
-
-```$ go get golang.org/x/crypto/scrypt```
-
-```$ go get golang.org/x/crypto/ssh/terminal```
-
-or just clone the repo:
-git clone https://go.googlesource.com/crypto
-
-see https://go.googlesource.com/crypto for further information
-
-
 ## Usage
 
 to encrypt a file into an image:
 
-```pepperpickle -encrypt FILE_TO_HIDE -image IMAGE```
+```$ pepperpickle -encrypt FILE_TO_HIDE -image IMAGE```
 
 
 
 to decrypt a file:
 
-```pepperpickle -decrypt IMAGE_out.png```
+```$pepperpickle -decrypt IMAGE_out.png```
 
-The user will be asked to provide a password.
+In both cases the user will be asked to provide a password.
+
+
+to print a short help:
+```$ pepperpickle -h```
+
+to print the version string:
+```$ pepperpickle -version```
+
+
+
+## Installation
+
+Binaries for Windows, Linux-amd64 and Mac OS X are available at:
+https://github.com/w33zl3p00tch/pepperpickle/releases
+
+Simply extract the binary to a folder in your PATH, e.g. /usr/local and make sure that it is executable.
+
+
+
+## Installation from source
+
+pepperpickle is written in Go 1.6. To successfully compile it, "golang.org/x/crypto/scrypt" and "golang.org/x/crypto/ssh/terminal" are needed.
+
+You can install the additional libraries by issuing:
+```$ go get golang.org/x/crypto/scrypt```
+```$ go get golang.org/x/crypto/ssh/terminal```
+
+or just clone the repo:
+```$ git clone https://go.googlesource.com/crypto```
+
+see https://go.googlesource.com/crypto for further information
+
+When all dependencies are met, build with
+```$ go build pepperpickle.go```
+or install with
+```$ go install pepperpickle```
 
 
 ## Revision history
 
+v0.0.3: added -version option; first Windows build
 v0.0.2: added workaround for images with fully transparent sections
-
 v0.0.1: initial commit
 
 
 ## Known issues
 
-pepperpickle_0: on some pixels with a green value of 255 in images with transparency the green value is set to 1. Apparently this is not an overflow bug in pepperpickle itself. I am investigating the issue. Any help is greatly appreciated.
+pepperpickle_0: on some pixels with a green value of 255 in images with transparency, the green value is set to 1. Apparently this is not an overflow bug in pepperpickle itself. I am investigating the issue, but any help is greatly appreciated.
 
 
 ## License
 
-Pepperpickle is released under a BSD-Style license.
+pepperpickle is released under a BSD-Style license.

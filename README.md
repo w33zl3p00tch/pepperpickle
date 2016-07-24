@@ -66,11 +66,11 @@ or install with
 
 
 ## Revision history
-
+ ```
 v0.0.3: added -version option; first Windows build
 v0.0.2: added workaround for images with fully transparent sections
 v0.0.1: initial commit
-
+```
 
 ## Known issues
 

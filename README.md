@@ -15,7 +15,7 @@ Please report any bugs you might find. Suggestions and feature requests are welc
 
 ## News
 
-14.10. 2016: I am currently in the process of rewriting pepperpickle and adding many features. If you want to help, drop me a mail and I'll provide you with my development version.
+2016/10/14: I am currently in the process of rewriting pepperpickle and adding many features. If you want to help, drop me a mail and I'll provide you with my development version.
 
 ## Usage
 

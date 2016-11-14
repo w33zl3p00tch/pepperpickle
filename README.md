@@ -13,6 +13,9 @@ Currently, the message is stored using the LSB (Least Significant Bit) of the pi
 
 Please report any bugs you might find. Suggestions and feature requests are welcome.
 
+## News
+
+14.10. 2016: I am currently in the process of rewriting pepperpickle and adding many features. If you want to help, drop me a mail and I'll provide you with my development version.
 
 ## Usage
 
